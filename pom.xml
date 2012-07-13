@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.entwine.weblounge</groupId>
   <artifactId>weblounge-base</artifactId>
@@ -27,7 +28,7 @@
     <name>Entwine</name>
     <url>http://www.entwinemedia.com</url>
   </organization>
-  
+
   <developers>
     <developer>
       <id>tobias.wunden</id>
@@ -83,9 +84,9 @@
     <system>lighthouse</system>
     <url>http://digitalcafe.lighthouseapp.com/projects/35461-weblounge</url>
   </issueManagement>
-  
+
   <profiles>
-  
+
     <!-- Build aggregator -->
     <profile>
       <id>full</id>
@@ -225,7 +226,7 @@
 
   <build>
     <defaultGoal>install</defaultGoal>
-    
+
     <testResources>
       <!-- Add a log4j configuration file to the test resources -->
       <testResource>
@@ -239,15 +240,15 @@
         <directory>${project.basedir}/src/test/resources</directory>
       </testResource>
     </testResources>
-    
+
     <plugins>
-    
+
       <!-- Compile -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
-      
+
       <!-- Enforce the project's code rules -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -267,10 +268,10 @@
       </plugin>
 
     </plugins>
-  
+
     <pluginManagement>
       <plugins>
-      
+
         <!-- Require Java 5 or higher for building -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -282,7 +283,7 @@
             <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
-        
+
         <!-- Attach sources to build artifacts -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -293,16 +294,16 @@
           </configuration>
           <executions>
             <execution>
-              <id>attach-sources</id> 
+              <id>attach-sources</id>
               <phase>verify</phase>
-              <goals> 
-                <goal>jar</goal> 
+              <goals>
+                <goal>jar</goal>
               </goals>
-             </execution>
+            </execution>
           </executions>
         </plugin>
 
-        <!-- Create class documentation -->        
+        <!-- Create class documentation -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
@@ -317,18 +318,18 @@
           </executions>
         </plugin>
 
-				<!-- Release management -->
-				<plugin>
-				  <groupId>org.apache.maven.plugins</groupId>
-				  <artifactId>maven-release-plugin</artifactId>
-				  <version>2.0</version>
-				  <configuration>
-				    <goals>deploy</goals>
-				    <autoVersionSubmodules>true</autoVersionSubmodules>
-						<addSchema>false</addSchema>
-				  </configuration>
-				</plugin>
-        
+        <!-- Release management -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.0</version>
+          <configuration>
+            <goals>deploy</goals>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
+            <addSchema>false</addSchema>
+          </configuration>
+        </plugin>
+
         <!-- Coding and styling rules for source code -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -342,8 +343,8 @@
             <consoleOutput>true</consoleOutput>
             <logViolationsToConsole>true</logViolationsToConsole>
             <excludes>**/package-info.java</excludes>
-            <failOnViolation>true</failOnViolation> 
-            <failsOnError>true</failsOnError> 
+            <failOnViolation>true</failOnViolation>
+            <failsOnError>true</failsOnError>
           </configuration>
           <executions>
             <execution>
@@ -362,19 +363,19 @@
           <configuration>
             <useFile>false</useFile>
             <encoding>UTF-8</encoding>
-              <systemProperties>
-                <property>
-                  <name>file.encoding</name>
-                  <value>UTF-8</value>
-                </property>
-                <property>
-                  <name>java.awt.headless</name>
-                  <value>true</value>
-                </property>
-              </systemProperties>
+            <systemProperties>
+              <property>
+                <name>file.encoding</name>
+                <value>UTF-8</value>
+              </property>
+              <property>
+                <name>java.awt.headless</name>
+                <value>true</value>
+              </property>
+            </systemProperties>
           </configuration>
         </plugin>
-        
+
         <!-- OSGi declarative services support -->
         <plugin>
           <groupId>org.apache.felix</groupId>
@@ -389,7 +390,7 @@
             </execution>
           </executions>
         </plugin>
-        
+
         <!-- OSGi bundle generation -->
         <plugin>
           <groupId>org.apache.felix</groupId>
@@ -425,7 +426,7 @@
           <version>2.1</version>
         </plugin>
 
-        <!-- Maven ant support -->        
+        <!-- Maven ant support -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
@@ -437,7 +438,8 @@
               <configuration>
                 <target name="[INFO] Deploy to stage" if="weblounge.home" unless="deployment.skip">
                   <property name="bundle.file" value="${project.build.directory}/${project.build.finalName}.jar" />
-                  <copy verbose="false" file="${bundle.file}" todir="${weblounge.home}/${weblounge.deploymentdir}" overwrite="true" failonerror="false" />
+                  <copy verbose="false" file="${bundle.file}" todir="${weblounge.home}/${weblounge.deploymentdir}"
+                    overwrite="true" failonerror="false" />
                 </target>
               </configuration>
               <goals>
@@ -461,7 +463,7 @@
             </execution>
           </executions>
         </plugin>
-        
+
         <!-- Reporting (maven 3 only) -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -569,20 +571,20 @@
 
       </plugins>
     </pluginManagement>
-    
+
     <extensions>
-        <extension>
-            <groupId>org.springframework.build.aws</groupId>
-            <artifactId>org.springframework.build.aws.maven</artifactId>
-            <version>3.0.0.RELEASE</version>
-        </extension>
+      <extension>
+        <groupId>org.springframework.build.aws</groupId>
+        <artifactId>org.springframework.build.aws.maven</artifactId>
+        <version>3.0.0.RELEASE</version>
+      </extension>
     </extensions>
-        
+
   </build>
 
   <dependencyManagement>
     <dependencies>
-  
+
       <dependency>
         <groupId>org.osgi</groupId>
         <artifactId>org.osgi.core</artifactId>
@@ -601,7 +603,7 @@
         <artifactId>org.osgi.enterprise</artifactId>
         <version>4.2.0</version>
       </dependency>
-  
+
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>servlet-api</artifactId>
@@ -615,7 +617,7 @@
         <version>2.0</version>
         <scope>provided</scope>
       </dependency>
-  
+
       <dependency>
         <groupId>javax.activation</groupId>
         <artifactId>activation</artifactId>
@@ -676,19 +678,19 @@
         <version>4.3</version>
         <scope>test</scope>
       </dependency>
-  
+
       <dependency>
         <groupId>org.easymock</groupId>
         <artifactId>easymock</artifactId>
         <version>2.0</version>
       </dependency>
-  
+
       <dependency>
         <groupId>org.quartz-scheduler</groupId>
         <artifactId>quartz</artifactId>
         <version>1.8.5</version>
       </dependency>
-  
+
       <dependency>
         <groupId>commons-cli</groupId>
         <artifactId>commons-cli</artifactId>
@@ -700,13 +702,13 @@
         <artifactId>commons-codec</artifactId>
         <version>1.3</version>
       </dependency>
-  
+
       <dependency>
         <groupId>commons-collections</groupId>
         <artifactId>commons-collections</artifactId>
         <version>3.2.1</version>
       </dependency>
-  
+
       <dependency>
         <groupId>commons-fileupload</groupId>
         <artifactId>commons-fileupload</artifactId>
@@ -718,31 +720,31 @@
         <artifactId>commons-lang</artifactId>
         <version>2.6</version>
       </dependency>
-    
+
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>2.0.1</version>
       </dependency>
-  
+
       <dependency>
         <groupId>commons-pool</groupId>
         <artifactId>commons-pool</artifactId>
         <version>1.5.3</version>
       </dependency>
-      
+
       <dependency>
         <groupId>commons-httpclient</groupId>
         <artifactId>commons-httpclient</artifactId>
         <version>3.1</version>
       </dependency>
-      
+
       <dependency>
         <groupId>taglibs</groupId>
         <artifactId>standard</artifactId>
         <version>1.1.2</version>
       </dependency>
-  
+
       <dependency>
         <groupId>org.codehaus.jackson</groupId>
         <artifactId>jackson-core-lgpl</artifactId>
@@ -766,33 +768,40 @@
         <artifactId>slf4j-api</artifactId>
         <version>1.6.1</version>
       </dependency>
-      
+
       <dependency>
-      	<groupId>org.springframework</groupId>
-     	<artifactId>org.springframework.core</artifactId>
-     	<version>3.0.2.RELEASE</version>
-   	  </dependency>
-    
+        <groupId>org.springframework</groupId>
+        <artifactId>org.springframework.core</artifactId>
+        <version>3.0.2.RELEASE</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk</artifactId>
+        <version>1.3.12</version>
+      </dependency>
+
+
       <!-- Testing -->
-  
+
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-log4j12</artifactId>
         <version>1.6.1</version>
       </dependency>
-      
+
       <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
         <version>1.2.16</version>
         <scope>test</scope>
       </dependency>
-      
+
     </dependencies>
   </dependencyManagement>
 
   <pluginRepositories>
-  
+
     <pluginRepository>
       <id>central</id>
       <url>http://maven.entwinemedia.com/content/groups/public</url>
@@ -840,25 +849,25 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
-    
+
   </repositories>
 
   <distributionManagement>
-    
+
     <repository>
-        <id>entwine.releases</id>
-        <name>Entwine Release Repository</name>
-        <url>http://maven.entwinemedia.com/content/repositories/releases</url>
-        <!-- url>s3://com.entwinemedia.maven/releases</url -->
+      <id>entwine.releases</id>
+      <name>Entwine Release Repository</name>
+      <url>http://maven.entwinemedia.com/content/repositories/releases</url>
+      <!-- url>s3://com.entwinemedia.maven/releases</url -->
     </repository>
 
     <snapshotRepository>
-        <id>entwine.snapshots</id>
-        <name>Entwine Snapshot Repository</name>
-        <url>http://maven.entwinemedia.com/content/repositories/snapshots</url>
-        <!-- url>s3://com.entwinemedia.maven/snapshots</url -->
+      <id>entwine.snapshots</id>
+      <name>Entwine Snapshot Repository</name>
+      <url>http://maven.entwinemedia.com/content/repositories/snapshots</url>
+      <!-- url>s3://com.entwinemedia.maven/snapshots</url -->
     </snapshotRepository>
 
   </distributionManagement>
-  
+
 </project>
