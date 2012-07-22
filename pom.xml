@@ -271,7 +271,7 @@
 
     <pluginManagement>
       <plugins>
-      
+
         <!-- Require Java 6 or higher for building -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -318,17 +318,18 @@
           </executions>
         </plugin>
 
-		<!-- Release management -->
-		<plugin>
-		  <groupId>org.apache.maven.plugins</groupId>
-		  <artifactId>maven-release-plugin</artifactId>
-		  <version>2.0</version>
-		  <configuration>
-		    <goals>deploy</goals>
-		    <autoVersionSubmodules>true</autoVersionSubmodules>
-				<addSchema>false</addSchema>
-		  </configuration>
-		</plugin>
+        <!-- Release management -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.0</version>
+          <configuration>
+            <goals>deploy</goals>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
+            <addSchema>false</addSchema>
+          </configuration>
+        </plugin>
+        
         <!-- Coding and styling rules for source code -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
