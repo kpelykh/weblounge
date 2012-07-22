@@ -20,10 +20,18 @@
 
 package ch.entwine.weblounge.contentrepository.impl.operation;
 
+import static ch.entwine.weblounge.common.url.UrlUtils.isExtendedPrefix;
+
+import ch.entwine.weblounge.common.content.Resource;
+import ch.entwine.weblounge.common.content.ResourceContent;
 import ch.entwine.weblounge.common.content.ResourceURI;
+import ch.entwine.weblounge.common.content.ResourceUtils;
 import ch.entwine.weblounge.common.content.repository.ContentRepositoryException;
 import ch.entwine.weblounge.common.content.repository.MoveOperation;
 import ch.entwine.weblounge.common.content.repository.WritableContentRepository;
+import ch.entwine.weblounge.common.url.UrlUtils;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 
@@ -63,6 +71,7 @@ public final class MoveOperationImpl extends AbstractContentRepositoryOperation<
    * 
    * @see ch.entwine.weblounge.common.content.repository.ContentRepositoryResourceOperation#getResourceURI()
    */
+  @Override
   public ResourceURI getResourceURI() {
     return uri;
   }
@@ -70,8 +79,40 @@ public final class MoveOperationImpl extends AbstractContentRepositoryOperation<
   /**
    * {@inheritDoc}
    * 
+   * @see ch.entwine.weblounge.common.content.repository.ContentRepositoryResourceOperation#apply(ResourceURI, Resource)
+   */
+  @Override
+  public <C extends ResourceContent, R extends Resource<C>> R apply(ResourceURI uri, R resource) {
+    if (resource == null)
+      return null;
+    if (resource.getPath() == null && !ResourceUtils.equalsByIdOrPathAndVersion(this.uri, resource.getURI()))
+      return resource;
+    else if (resource.getPath() == null || !ResourceUtils.equalsByIdOrPathAndVersion(this.uri, resource.getURI())) {
+      resource.setPath(moveTo);
+      return resource;
+    } else if (moveChildren && isExtendedPrefix(this.uri.getPath(), resource.getPath())) {
+      String originalPathPrefix = this.uri.getPath();
+      String originalPath = resource.getPath();
+      String pathSuffix = originalPath.substring(originalPathPrefix.length());
+      String newPath = null;
+
+      // Is the original path just a prefix, or is it an exact match?
+      if (StringUtils.isNotBlank(pathSuffix))
+        newPath = UrlUtils.concat(moveTo, pathSuffix);
+      else
+        newPath = moveTo;
+
+      resource.setPath(newPath);
+    }
+    return resource;
+  }
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see ch.entwine.weblounge.common.content.repository.MoveOperation#getTargetPath()
    */
+  @Override
   public String getTargetPath() {
     return moveTo;
   }
@@ -81,6 +122,7 @@ public final class MoveOperationImpl extends AbstractContentRepositoryOperation<
    * 
    * @see ch.entwine.weblounge.common.content.repository.MoveOperation#moveChildren()
    */
+  @Override
   public boolean moveChildren() {
     return moveChildren;
   }
@@ -88,7 +130,7 @@ public final class MoveOperationImpl extends AbstractContentRepositoryOperation<
   /**
    * {@inheritDoc}
    * 
-   * @see ch.entwine.weblounge.common.content.repository.ContentRepositoryOperation#execute(ch.entwine.weblounge.common.content.repository.WritableContentRepository)
+   * @see ch.entwine.weblounge.contentrepository.impl.operation.AbstractContentRepositoryOperation#run(ch.entwine.weblounge.common.content.repository.WritableContentRepository)
    */
   @Override
   protected Void run(WritableContentRepository repository)

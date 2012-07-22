@@ -20,7 +20,10 @@
 
 package ch.entwine.weblounge.contentrepository.impl.operation;
 
+import ch.entwine.weblounge.common.content.Resource;
+import ch.entwine.weblounge.common.content.ResourceContent;
 import ch.entwine.weblounge.common.content.ResourceURI;
+import ch.entwine.weblounge.common.content.ResourceUtils;
 import ch.entwine.weblounge.common.content.repository.ContentRepositoryException;
 import ch.entwine.weblounge.common.content.repository.DeleteOperation;
 import ch.entwine.weblounge.common.content.repository.ReferentialIntegrityException;
@@ -59,6 +62,29 @@ public final class DeleteOperationImpl extends AbstractContentRepositoryOperatio
    */
   public ResourceURI getResourceURI() {
     return uri;
+  }
+
+  /**
+   * {@inheritDoc}
+   * <p>
+   * This implementation return <code>null</code> if the resource's uri equals
+   * that of this operation.
+   * 
+   * @see ch.entwine.weblounge.common.content.repository.ContentRepositoryResourceOperation#apply(ResourceURI,
+   *      Resource)
+   */
+  public <C extends ResourceContent, R extends Resource<C>> R apply(
+      ResourceURI uri, R resource) {
+
+    if (resource == null)
+      return null;
+
+    if (allVersions && ResourceUtils.equalsByIdOrPath(this.uri, resource.getURI()))
+      return null;
+    else if (!allVersions && ResourceUtils.equalsByIdOrPathAndVersion(this.uri, resource.getURI()))
+      return null;
+
+    return resource;
   }
 
   /**

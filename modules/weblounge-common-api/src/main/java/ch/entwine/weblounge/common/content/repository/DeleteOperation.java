@@ -20,7 +20,6 @@
 
 package ch.entwine.weblounge.common.content.repository;
 
-
 /**
  * The delete operation represents the removal of a resource from the content
  * repository.

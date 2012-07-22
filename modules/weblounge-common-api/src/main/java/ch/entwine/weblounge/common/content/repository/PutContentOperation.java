@@ -29,14 +29,7 @@ import java.io.InputStream;
  * The put operation represents the process of writing a resource to the content
  * repository.
  */
-public interface PutContentOperation<T extends ResourceContent> extends ContentRepositoryResourceOperation<Resource<T>> {
-
-  /**
-   * Returns the resource content that is being added to the resource.
-   * 
-   * @return the resource content
-   */
-  T getContent();
+public interface PutContentOperation extends ContentRepositoryResourceContentOperation<Resource<? extends ResourceContent>> {
 
   /**
    * Returns the resource's content data stream.

@@ -154,9 +154,12 @@ steal.then('jsonix')
 				headers = {"If-Match": params.eTag};
 			
 			if ('id' in params) {
+				var asynchron = false;
+				if('async' in params)
+					asynchron = params.async;
 				$.ajax({
 					url: '/system/weblounge/pages/' + params.id,
-					async: false,
+					async: asynchron,
 					type: 'put',
 					success: success,
 					error: error,
@@ -176,8 +179,12 @@ steal.then('jsonix')
 				var data = {path : params.path};
 				if('content' in params)
 					data = {path : params.path, content : Page.parseJSON(params.content)}
+				var asynchron = false;
+				if('async' in params)
+					asynchron = params.async;
 				$.ajax({
 					url: '/system/weblounge/pages/',
+					async: asynchron,
 					type: 'post',
 					dataType: 'xml',
 					data: data,
@@ -543,7 +550,7 @@ steal.then('jsonix')
 	    	delete pagelet.locale.current;
 	    	delete pagelet.locale.original;
 	    	this.value.body.composers[this.getComposerIndex(composerId)].pagelets[index] = pagelet;
-	    	Page.update({id:this.value.id}, this, success);
+	    	Page.update({id:this.value.id, async:false}, this, success);
 	    },
 	    
 	    /**

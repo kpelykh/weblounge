@@ -20,12 +20,14 @@
 
 package ch.entwine.weblounge.common.content.repository;
 
+import ch.entwine.weblounge.common.content.Resource;
+import ch.entwine.weblounge.common.content.ResourceContent;
 import ch.entwine.weblounge.common.content.ResourceURI;
 
 /**
  * Interface that identifies operations that modify a given resource.
  */
-public interface ContentRepositoryResourceOperation<T extends Object> extends ContentRepositoryOperation<T> {
+public interface ContentRepositoryResourceOperation<T> extends ContentRepositoryOperation<T> {
 
   /**
    * Returns the resource.
@@ -33,5 +35,18 @@ public interface ContentRepositoryResourceOperation<T extends Object> extends Co
    * @return the resource
    */
   ResourceURI getResourceURI();
+
+  /**
+   * Applies this operation to the in-memory instance of <code>resource</code>
+   * and returns the modified version.
+   * 
+   * @param uri
+   *          the resource uri
+   * @param resource
+   *          the resource
+   * @return the modified resource
+   */
+  <C extends ResourceContent, R extends Resource<C>> R apply(ResourceURI uri,
+      R resource);
 
 }

@@ -20,6 +20,8 @@
 
 package ch.entwine.weblounge.contentrepository.impl.operation;
 
+import static ch.entwine.weblounge.common.content.ResourceUtils.equalsByIdOrPathAndVersion;
+
 import ch.entwine.weblounge.common.content.Resource;
 import ch.entwine.weblounge.common.content.ResourceContent;
 import ch.entwine.weblounge.common.content.ResourceURI;
@@ -32,10 +34,10 @@ import java.io.IOException;
 /**
  * This operation implements a put of the given resource.
  */
-public final class PutOperationImpl<T extends ResourceContent> extends AbstractContentRepositoryOperation<Resource<T>> implements PutOperation<T> {
+public final class PutOperationImpl extends AbstractContentRepositoryOperation<Resource<? extends ResourceContent>> implements PutOperation {
 
   /** The resource to be locked */
-  private Resource<T> resource = null;
+  private Resource<?> resource = null;
 
   /** Whether to update the preview as part of this put operation */
   private boolean updatePreviews = true;
@@ -48,17 +50,17 @@ public final class PutOperationImpl<T extends ResourceContent> extends AbstractC
    * @param updatePreviews
    *          whether to update the resource's previews
    */
-  public PutOperationImpl(Resource<T> resource, boolean updatePreviews) {
+  public PutOperationImpl(Resource<?> resource, boolean updatePreviews) {
     this.resource = resource;
     this.updatePreviews = updatePreviews;
   }
 
   /**
-   * {@inheritDoc}
+   * Returns the resource.
    * 
-   * @see ch.entwine.weblounge.common.content.repository.PutOperation#getResource()
+   * @return the resource
    */
-  public Resource<T> getResource() {
+  public Resource<? extends ResourceContent> getResource() {
     return resource;
   }
 
@@ -69,6 +71,30 @@ public final class PutOperationImpl<T extends ResourceContent> extends AbstractC
    */
   public ResourceURI getResourceURI() {
     return resource.getURI();
+  }
+
+  /**
+   * {@inheritDoc}
+   * 
+   * @see ch.entwine.weblounge.common.content.repository.ContentRepositoryResourceOperation#apply(ch.entwine.weblounge.common.content.ResourceURI,
+   *      ch.entwine.weblounge.common.content.Resource)
+   */
+  @SuppressWarnings("unchecked")
+  public <C extends ResourceContent, R extends Resource<C>> R apply(
+      ResourceURI uri, R resource) {
+
+    // Is this a resource creation...
+    if (resource == null) {
+      if (equalsByIdOrPathAndVersion(uri, this.resource.getURI()))
+        return (R) this.resource;
+      return null;
+    }
+
+    // or simply an update (needs to be handled separately because of resource
+    // that could have been moved around, resulting in a different path)?
+    if (!equalsByIdOrPathAndVersion(this.resource.getURI(), resource.getURI()))
+      return resource;
+    return (R) this.resource;
   }
 
   /**
@@ -86,9 +112,10 @@ public final class PutOperationImpl<T extends ResourceContent> extends AbstractC
    * @see ch.entwine.weblounge.common.content.repository.ContentRepositoryOperation#execute(ch.entwine.weblounge.common.content.repository.WritableContentRepository)
    */
   @Override
-  protected Resource<T> run(WritableContentRepository repository)
-      throws ContentRepositoryException, IOException {
-    return repository.put(resource);
+  protected Resource<? extends ResourceContent> run(
+      WritableContentRepository repository) throws ContentRepositoryException,
+      IOException {
+    return repository.put(resource, updatePreviews);
   }
 
 }

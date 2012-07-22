@@ -35,7 +35,9 @@ import ch.entwine.weblounge.workbench.suggest.SuggestionList;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -51,7 +53,7 @@ import javax.ws.rs.core.Response.Status;
  */
 @Path("/")
 public class WorkbenchEndpoint {
-  
+
   /** The workbench */
   protected transient WorkbenchService workbench = null;
 
@@ -99,7 +101,35 @@ public class WorkbenchEndpoint {
       throw new WebApplicationException(Status.NOT_FOUND);
     return Response.ok(editor.toXml()).build();
   }
-  
+
+  @POST
+  @Produces(MediaType.TEXT_HTML)
+  @Path("/renderer/{page}/{composer}/{pageletindex}")
+  public Response getRenderer(@Context HttpServletRequest request,
+      @PathParam("page") String pageURI,
+      @PathParam("composer") String composerId,
+      @PathParam("pageletindex") int pageletIndex,
+      @QueryParam("language") String language, @FormParam("page") String pageXml) {
+
+    // Load the site
+    Site site = getSite(request);
+    if (site == null)
+      throw new WebApplicationException(Status.NOT_FOUND);
+
+    ResourceURI uri = new PageURIImpl(site, null, pageURI, Resource.WORK);
+    String renderedPagelet;
+    try {
+      renderedPagelet = workbench.getRenderer(site, uri, composerId, pageletIndex, pageXml, language, environment);
+    } catch (Exception e) {
+      throw new WebApplicationException(e);
+    }
+
+    if (renderedPagelet == null)
+      throw new WebApplicationException(Status.NOT_FOUND);
+    return Response.ok(renderedPagelet).build();
+
+  }
+
   @GET
   @Produces(MediaType.TEXT_HTML)
   @Path("/renderer/{page}/{composer}/{pageletindex}")
@@ -108,20 +138,20 @@ public class WorkbenchEndpoint {
       @PathParam("composer") String composerId,
       @PathParam("pageletindex") int pageletIndex,
       @QueryParam("language") String language) {
-    
+
     // Load the site
     Site site = getSite(request);
-    if(site == null)
+    if (site == null)
       throw new WebApplicationException(Status.NOT_FOUND);
-    
+
     ResourceURI uri = new PageURIImpl(site, null, pageURI, Resource.WORK);
     String renderedPagelet;
     try {
       renderedPagelet = workbench.getRenderer(site, uri, composerId, pageletIndex, language, environment);
-    } catch (IOException e) {
+    } catch (Exception e) {
       throw new WebApplicationException(e);
     }
-    
+
     if (renderedPagelet == null)
       throw new WebApplicationException(Status.NOT_FOUND);
     return Response.ok(renderedPagelet).build();

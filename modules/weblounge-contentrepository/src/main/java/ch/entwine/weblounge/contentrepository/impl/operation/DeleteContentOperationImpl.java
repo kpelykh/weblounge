@@ -23,6 +23,7 @@ package ch.entwine.weblounge.contentrepository.impl.operation;
 import ch.entwine.weblounge.common.content.Resource;
 import ch.entwine.weblounge.common.content.ResourceContent;
 import ch.entwine.weblounge.common.content.ResourceURI;
+import ch.entwine.weblounge.common.content.ResourceUtils;
 import ch.entwine.weblounge.common.content.repository.ContentRepositoryException;
 import ch.entwine.weblounge.common.content.repository.DeleteContentOperation;
 import ch.entwine.weblounge.common.content.repository.WritableContentRepository;
@@ -32,13 +33,13 @@ import java.io.IOException;
 /**
  * This operation implements a removal of content from the given resource.
  */
-public final class DeleteContentOperationImpl<T extends ResourceContent> extends AbstractContentRepositoryOperation<Resource<T>> implements DeleteContentOperation<T> {
+public final class DeleteContentOperationImpl extends AbstractContentRepositoryOperation<Resource<? extends ResourceContent>> implements DeleteContentOperation {
 
   /** The resource to be locked */
   private ResourceURI uri = null;
 
   /** The resource content */
-  private T content = null;
+  private ResourceContent content = null;
 
   /**
    * Creates a new delete content operation for the given resource.
@@ -48,9 +49,31 @@ public final class DeleteContentOperationImpl<T extends ResourceContent> extends
    * @param content
    *          the resource content
    */
-  public DeleteContentOperationImpl(ResourceURI uri, T content) {
+  public DeleteContentOperationImpl(ResourceURI uri, ResourceContent content) {
     this.uri = uri;
     this.content = content;
+  }
+
+  /**
+   * {@inheritDoc}
+   * <p>
+   * This implementation removes the content from the resource if the resource's
+   * uri matches this operation's uri.
+   * 
+   * @see ch.entwine.weblounge.common.content.repository.ContentRepositoryResourceOperation#apply(ResourceURI,
+   *      Resource)
+   */
+  public <C extends ResourceContent, R extends Resource<C>> R apply(
+      ResourceURI uri, R resource) {
+
+    if (resource == null)
+      return null;
+
+    if (!ResourceUtils.equalsByIdOrPathAndVersion(this.uri, resource.getURI()))
+      return resource;
+
+    resource.removeContent(content.getLanguage());
+    return resource;
   }
 
   /**
@@ -67,7 +90,7 @@ public final class DeleteContentOperationImpl<T extends ResourceContent> extends
    * 
    * @see ch.entwine.weblounge.common.content.repository.PutContentOperation#getContent()
    */
-  public T getContent() {
+  public ResourceContent getContent() {
     return content;
   }
 
@@ -77,8 +100,9 @@ public final class DeleteContentOperationImpl<T extends ResourceContent> extends
    * @see ch.entwine.weblounge.common.content.repository.ContentRepositoryOperation#execute(ch.entwine.weblounge.common.content.repository.WritableContentRepository)
    */
   @Override
-  protected Resource<T> run(WritableContentRepository repository)
-      throws ContentRepositoryException, IOException, IllegalStateException {
+  protected Resource<? extends ResourceContent> run(
+      WritableContentRepository repository) throws ContentRepositoryException,
+      IOException, IllegalStateException {
     return repository.deleteContent(uri, content);
   }
 

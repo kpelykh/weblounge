@@ -23,6 +23,7 @@ package ch.entwine.weblounge.contentrepository.impl.operation;
 import ch.entwine.weblounge.common.content.Resource;
 import ch.entwine.weblounge.common.content.ResourceContent;
 import ch.entwine.weblounge.common.content.ResourceURI;
+import ch.entwine.weblounge.common.content.ResourceUtils;
 import ch.entwine.weblounge.common.content.repository.ContentRepositoryException;
 import ch.entwine.weblounge.common.content.repository.UnlockOperation;
 import ch.entwine.weblounge.common.content.repository.WritableContentRepository;
@@ -33,7 +34,7 @@ import java.io.IOException;
 /**
  * This operation implements an unlock of the given resource.
  */
-public final class UnlockOperationImpl<T extends ResourceContent> extends AbstractContentRepositoryOperation<Resource<T>> implements UnlockOperation<T> {
+public final class UnlockOperationImpl extends AbstractContentRepositoryOperation<Resource<? extends ResourceContent>> implements UnlockOperation {
 
   /** The potential lock owner */
   private User user = null;
@@ -66,6 +67,26 @@ public final class UnlockOperationImpl<T extends ResourceContent> extends Abstra
   /**
    * {@inheritDoc}
    * 
+   * @see ch.entwine.weblounge.common.content.repository.ContentRepositoryResourceOperation#apply(ResourceURI,
+   *      Resource)
+   */
+  public <C extends ResourceContent, R extends Resource<C>> R apply(
+      ResourceURI uri, R resource) {
+    if (resource == null)
+      return null;
+
+    // Is it a different resource? We care about id and path, but not about
+    // version
+    if (!ResourceUtils.equalsByIdOrPath(this.uri, resource.getURI()))
+      return resource;
+
+    resource.unlock();
+    return resource;
+  }
+
+  /**
+   * {@inheritDoc}
+   * 
    * @see ch.entwine.weblounge.common.content.repository.UnlockOperation#getUser()
    */
   public User getUser() {
@@ -78,8 +99,9 @@ public final class UnlockOperationImpl<T extends ResourceContent> extends Abstra
    * @see ch.entwine.weblounge.common.content.repository.ContentRepositoryOperation#execute(ch.entwine.weblounge.common.content.repository.WritableContentRepository)
    */
   @Override
-  protected Resource<T> run(WritableContentRepository repository)
-      throws ContentRepositoryException, IOException {
+  protected Resource<? extends ResourceContent> run(
+      WritableContentRepository repository) throws ContentRepositoryException,
+      IOException {
     return repository.unlock(uri, user);
   }
 

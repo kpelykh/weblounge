@@ -20,6 +20,7 @@
 
 package ch.entwine.weblounge.common.content.repository;
 
+
 /**
  * The move operation represents the process of a resource (and potentially its
  * children) being moved from one path or url to another.

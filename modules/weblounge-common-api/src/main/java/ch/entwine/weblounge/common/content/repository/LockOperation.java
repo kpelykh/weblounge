@@ -28,7 +28,7 @@ import ch.entwine.weblounge.common.security.User;
  * The lock operation represents the process of locking a resource for editing
  * in the content repository.
  */
-public interface LockOperation<T extends ResourceContent> extends ContentRepositoryResourceOperation<Resource<T>> {
+public interface LockOperation extends ContentRepositoryResourceOperation<Resource<? extends ResourceContent>> {
 
   /**
    * Returns the locking user.
