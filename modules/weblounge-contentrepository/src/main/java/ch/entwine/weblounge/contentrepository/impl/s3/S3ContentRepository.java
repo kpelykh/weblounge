@@ -86,45 +86,11 @@ public class S3ContentRepository extends AbstractWritableContentRepository imple
   /**
    * {@inheritDoc}
    * 
-   * @see ch.entwine.weblounge.common.content.repository.WritableContentRepository#index()
-   */
-  public void index() throws ContentRepositoryException {
-    // TODO Auto-generated method stub
-
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see ch.entwine.weblounge.common.content.repository.WritableContentRepository#indexAsynchronously()
-   */
-  public IndexOperation indexAsynchronously() throws ContentRepositoryException {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
    * @see ch.entwine.weblounge.contentrepository.impl.AbstractWritableContentRepository#storeResource(ch.entwine.weblounge.common.content.Resource)
    */
   @Override
   protected <T extends ResourceContent, R extends Resource<T>> R storeResource(
       R resource) throws IOException {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see ch.entwine.weblounge.contentrepository.impl.AbstractWritableContentRepository#storeResourceContent(ch.entwine.weblounge.common.content.ResourceURI,
-   *      ch.entwine.weblounge.common.content.ResourceContent,
-   *      java.io.InputStream)
-   */
-  @Override
-  protected <T extends ResourceContent> T storeResourceContent(ResourceURI uri,
-      T content, InputStream is) throws IOException {
     // TODO Auto-generated method stub
     return null;
   }
@@ -162,64 +128,41 @@ public class S3ContentRepository extends AbstractWritableContentRepository imple
 
   /**
    * {@inheritDoc}
-   * 
-   * @see ch.entwine.weblounge.contentrepository.impl.AbstractWritableContentRepository#deleteResourceContent(ch.entwine.weblounge.common.content.ResourceURI,
-   *      ch.entwine.weblounge.common.content.ResourceContent)
+   *
+   * @see ch.entwine.weblounge.contentrepository.impl.AbstractWritableContentRepository#listResources(java.lang.String)
    */
   @Override
-  protected <T extends ResourceContent> void deleteResourceContent(
-      ResourceURI uri, T content) throws IOException {
-    try {
-      s3Client.deleteObject(bucketName, uriToKey(uri, content));
-    } catch (AmazonServiceException e) {
-      throw new IOException(e);
-    } catch (AmazonClientException e) {
-      throw new IOException(e);
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see ch.entwine.weblounge.contentrepository.impl.AbstractContentRepository#openStreamToResource(ch.entwine.weblounge.common.content.ResourceURI)
-   */
-  @Override
-  protected InputStream openStreamToResource(ResourceURI uri)
+  protected List<ResourceURI> listResources(String resourceType)
       throws IOException {
-    S3Object obj;
-    try {
-      obj = s3Client.getObject(bucketName, uriToKey(uri));
-    } catch (AmazonServiceException e) {
-      throw new IOException(e);
-    } catch (AmazonClientException e) {
-      throw new IOException(e);
-    }
-    return obj.getObjectContent();
-  }
-
-  /**
-   * {@inheritDoc}
-   * 
-   * @see ch.entwine.weblounge.contentrepository.impl.AbstractContentRepository#openStreamToResourceContent(ch.entwine.weblounge.common.content.ResourceURI,
-   *      ch.entwine.weblounge.common.language.Language)
-   */
-  @Override
-  protected InputStream openStreamToResourceContent(ResourceURI uri,
-      Language language) throws IOException {
     // TODO Auto-generated method stub
     return null;
   }
 
-  /**
-   * {@inheritDoc}
-   * 
-   * @see ch.entwine.weblounge.contentrepository.impl.AbstractContentRepository#loadIndex()
-   */
   @Override
-  protected ContentRepositoryIndex loadIndex() throws IOException,
-      ContentRepositoryException {
+  protected InputStream loadResource(ResourceURI uri) throws IOException {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  @Override
+  protected InputStream loadResourceContent(ResourceURI uri, Language language)
+      throws IOException {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  protected <C extends ResourceContent, R extends Resource<C>> C storeResourceContent(
+      ResourceURI uri, C content, InputStream is) throws IOException {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  protected <C extends ResourceContent, R extends Resource<C>> void deleteResourceContent(
+      ResourceURI uri, C content) throws IOException {
+    // TODO Auto-generated method stub
+
   }
 
   protected String uriToKeyPrefix(ResourceURI uri)
