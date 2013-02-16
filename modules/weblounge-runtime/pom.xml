@@ -105,6 +105,13 @@
       <artifactId>org.apache.felix.webconsole</artifactId>
       <version>3.1.8</version>
     </dependency>
+    
+    <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.webconsole.plugins.memoryusage</artifactId>
+      <version>1.0.4</version>
+    </dependency>
+            
 
     <!-- Start level 2 -->
 
