@@ -20,3 +20,9 @@ target
 
 # Mac OS X
 .DS_Store
+
+/modules/weblounge-ui-ng/www/
+
+/modules/weblounge-ui-ng/node_modules/
+
+/modules/weblounge-ui-ng/node/
