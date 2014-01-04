@@ -9,7 +9,7 @@
     "onevar"          : true,
     "camelcase"       : false,
     "immed"           : true,
-    "indent"          : 4,
+    "indent"          : 2,
     "noarg"           : true,
     "quotmark"        : true,
     "unused"          : true,
@@ -33,5 +33,5 @@
         "navigator"       : true,
         "angular"         : true
     },
-    "ignores": ["src/main/resources/app/lib/**/*"]
+    "ignores": ["src/main/resources/editor/lib/**/*"]
 }

@@ -1,18 +1,25 @@
 <!doctype html>
-<html>
-<head>
+<html ng-app="webledit">
+<head lang="en">
   <meta charset="utf-8">
-  <title>Weblounge 4.0</title>
+  <title>Weblounge NG Editor</title>
   <link rel="stylesheet" href="css/app.css"/>
 </head>
 
 <body>
   
-  <div ng-app="adminNg">Hello World!</div>
-
-  <script src="lib/angular/angular.js"></script>
-  <script src="js/app.js"></script>
+  <p>2 + 4 = {{2+4}}</p>
+  <hr />
   
+  <div ng-view></div>
+
+
+  <script src="lib/angular/angular.min.js"></script>
+  <script src="lib/angular/angular-route.min.js"></script>
+  <script src="lib/lodash.min.js"></script>
+  <script src="lib/restangular.min.js"></script>
+  <script src="app/app.js"></script>
+  <script src="app/resources/resourcesBrowserCtrl.js"></script>
 </body>
   
 </html>

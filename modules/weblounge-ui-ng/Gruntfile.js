@@ -81,8 +81,7 @@ module.exports = function(grunt) {
             // Watch file on web server for live reload
             www: {
                 options: {
-                    livereload: true,
-                    spawn: false
+                    livereload: true
                 },
                 files: ["<%= srcPath.www %>/app/**/*", "<%= srcPath.www %>"]
             }
@@ -159,7 +158,7 @@ module.exports = function(grunt) {
                     port       : 9002,
                     base       : '<%= serverDir %>',
                     keepalive  : true,
-                    livereload : true
+                    livereload : false
                 }
             }
         },
