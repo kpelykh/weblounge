@@ -25,11 +25,10 @@ module.exports = function (config) {
     files: [
       '../../main/resources/app/lib/angular/angular.js',
       '../../main/resources/app/lib/angular/angular-translate.js',
-      '../../main/resources/app/lib/angular/angular-translate-loader-static-files.js',
       '../../main/resources/app/lib/angular/angular-route.js',
-      '../../main/resources/app/lib/angular/angular-resource.js',
-      '../../main/resources/app/lib/angular/angular-*.js',
-      '../../main/resources/app/js/**/*.js',
+      '../../main/resources/app/lib/lodash.js',
+      '../../main/resources/app/lib/restangular.js',
+      '../../main/resources/app/app/**/*.js',
       'test/lib/angular/angular-mocks.js',
       'test/unit/**/*.js'
     ],
@@ -43,8 +42,6 @@ module.exports = function (config) {
     autoWatch: true,
 
     frameworks: ['jasmine'],
-
-    browsers: ['Chrome'],
 
     plugins: [
       'karma-junit-reporter',
