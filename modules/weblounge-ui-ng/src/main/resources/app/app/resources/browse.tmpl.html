@@ -1,2 +1,5 @@
 <h1>Welcome to the Resource Browser!</h1>
 <p>Resources found: {{resources.$object.length}}</p>
+<ul>
+  <li ng-repeat="resource in resources.$object">{{resource.title.de}} </li>
+</ul>
